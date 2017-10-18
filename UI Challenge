@@ -1,0 +1,68 @@
+package amazonTest;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+
+public class sorted {
+
+	public static void main(String[] args) throws InterruptedException {
+		// TODO Auto-generated method stub
+		
+		try{
+			//System.setProperty("webdriver.gecko.driver", "C://Users/keerthi/Desktop/Selenium/geckodriver-v0.19.0/geckodriver.exe");
+			//WebDriver driver = new FirefoxDriver();
+
+			System.setProperty("webdriver.chrome.driver", "C://Users/keerthi/Desktop/Selenium/chromedriver.exe");
+		WebDriver driver = new ChromeDriver();
+			
+			driver.manage().window().maximize();
+
+				String baseUrl = "https://www.amazon.com/"; 
+				driver.get(baseUrl);
+				Thread.sleep(1000L);
+				driver.findElement(By.xpath(".//*[@id='nav-xshop']/a[2]")).click();		//Today's Deals
+				Thread.sleep(2000L);
+				driver.findElement(By.xpath("//*[@id='a-autoid-0']")).click();	//Sort By Click
+				Thread.sleep(2000L);
+				//*[@id="a-autoid-0"]
+				driver.findElement(By.partialLinkText("Price - Low to High")).click();	//Price Low to High
+				
+				
+				
+				
+
+				Thread.sleep(1000L);
+				
+				//ArrayList<String> arlist = new ArrayList<String>();
+				
+				for(int i=0;i<=31; i++){
+					Thread.sleep(1000L);
+					WebElement element = driver.findElement(By.xpath("//*[@id='100_dealView_" + i +"']/div/div[2]/div/div[2]/div[1]/span"));
+					
+					String text =  element.getText();
+					
+					Thread.sleep(1000L);
+					System.out.println(text);
+							
+					//*[@id="100_dealView_0"]/div/div[2]/div/div[2]/div[1]/span
+				}
+				
+				//*[@id="100_dealView_1"]/div/div[2]/div/div[2]/div[1]/span
+				
+			}
+		
+		catch(Exception e){
+			
+			System.out.println(e);
+		}	
+		
+	}
+	
+}

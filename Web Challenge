@@ -1,0 +1,50 @@
+package SecurityTests;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import org.junit.Test;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Scanner;
+
+import static org.junit.Assert.assertTrue;
+
+public class Demo {
+   StringBuilder inline = new StringBuilder();
+
+   @Test
+   public void apiTest() throws IOException {
+
+       URL url = new URL("http://restcountries.eu/rest/v2/all");
+       HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+       connection.setRequestMethod("GET");
+       connection.connect();
+       int responseCode = connection.getResponseCode();
+
+       assertTrue(responseCode == 200);
+
+       Scanner sc = new Scanner(url.openStream());
+       while (sc.hasNext()) {
+           inline.append(sc.nextLine());
+       }
+       System.out.println(inline);
+
+       String input = inline.toString();
+       JsonParser parser = new JsonParser();
+       JsonArray jarray = (JsonArray) parser.parse(input);
+
+       for (JsonElement jelement:jarray) {
+           try{assertTrue(jelement.getAsJsonObject().get("alpha2Code").toString().length()-2 == 2);
+               assertTrue(jelement.getAsJsonObject().get("alpha3Code").toString().length()-2 == 3);
+               assertTrue(jelement.getAsJsonObject().get("name").getAsJsonPrimitive().isString());
+           }catch (Exception e){
+               System.out.println("Failed to verify");
+           }
+       }
+       System.out.println("Response API verified Successfully!!!");
+
+   }
+}
